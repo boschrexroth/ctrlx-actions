@@ -1,0 +1,60 @@
+# MIT License
+
+# Copyright (c) 2022 Bosch Rexroth AG
+
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+
+name: 'Ctrlx Build App'
+description: 'Building Ctrlx App'
+author: 'boschrexroth'
+
+inputs:
+  app-name:
+    description: 'Name of App'
+    required: false
+    default: ${{ github.event.repository.name }}
+
+runs:
+  using: "composite"
+  steps:
+
+    - run: |
+        sudo snap install snapcraft --classic
+        sudo dpkg --add-architecture arm64
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ focal main restricted universe" | sudo tee -a /etc/apt/sources.list.d/multiarch-libs.list
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ focal-updates main restricted universe" | sudo tee -a /etc/apt/sources.list.d/multiarch-libs.list
+        sudo sed -i 's/deb http/deb [arch=amd64] http/g' /etc/apt/sources.list 
+      shell: bash
+    
+    - run: |
+        snapcraft clean --destructive-mode
+        snapcraft --destructive-mode --target-arch=amd64 --enable-experimental-target-arch
+      shell: bash
+    - run: |
+        snapcraft clean --destructive-mode
+        snapcraft --destructive-mode --target-arch=arm64 --enable-experimental-target-arch
+      shell: bash
+    - run: |
+        sudo mkdir -p public/snaps/amd64/release/
+        sudo mkdir -p public/snaps/arm64/release/
+        sudo cp *amd64.snap public/snaps/amd64/release/
+        sudo cp *arm64.snap public/snaps/arm64/release/
+        tar -cf ${{ inputs.app-name }}.app public
+        zip -r binaries.zip ${{ inputs.app-name }}.app *.snap
+      shell: bash
