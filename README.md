@@ -2,10 +2,9 @@
 GitHub Actions to build Snaps for the [ctrlX Core](https://apps.boschrexroth.com/microsites/ctrlx-automation/en/portfolio/ctrlx-core/) form [Bosch Rexroth](https://www.boschrexroth.com/).
 
 ## Usage
+The examples below shows how to use this action in your GitHub Workflow. 
 
 ### Build Snap
-The example below shows how to use this action in your GitHub Workflow. 
-
 Create snap for amd64 architecture (for Virtual Control)
 ```yaml
 name: build ctrlX snap
@@ -58,6 +57,56 @@ jobs:
         with:
           tag_name: v0.0.1
           files: '*.snap'
+```
+
+### Build App
+Create app file 
+```yaml
+name: build ctrlX app
+
+on: push
+
+jobs:
+  ctrlX:
+    runs-on: ubuntu-latest
+
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Build ctrlX snap
+        uses: boschrexroth/ctrlx-action/build-app@v1
+      - 
+        name: Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v0.0.1
+          files: binaries.zip
+```
+
+### Validate JSON schema
+
+Validate JSON for ctrlX specific schemas
+```yaml
+name: validate JSON schema
+
+on: push
+
+jobs:
+  ctrlX:
+    runs-on: ubuntu-latest
+
+    steps:
+      - 
+        name: Checkout
+        uses: actions/checkout@v3
+      - 
+        name: Validate JSON
+        uses: boschrexroth/ctrlx-action/validate-json-schema@v1
+        with:
+          json-schema: test-schema.json
+          json-file: test.json
 ```
 ## Important directions for use
 
