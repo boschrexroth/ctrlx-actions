@@ -1,11 +1,25 @@
 # Actions to build Apps for ctrlX
-GitHub Actions to build Snaps for the [ctrlX Core](https://apps.boschrexroth.com/microsites/ctrlx-automation/en/portfolio/ctrlx-core/) form [Bosch Rexroth](https://www.boschrexroth.com/).
+GitHub Actions to build Apps for the [ctrlX Core](https://apps.boschrexroth.com/microsites/ctrlx-automation/en/portfolio/ctrlx-core/) from [Bosch Rexroth](https://www.boschrexroth.com/).
+
+* [Usage](#usage)
+  * [Build Snap](#build-snap)
+  * [Build App](#build-app)
+  * [Validate JSON schema](#validate-json-schema)
+* [Important direction for use](#important-direction-for-use)
+  * [Areas of use and application](#areas-of-use-and-application)
+  * [Unintended use](#unintended-use)
+* [About](#about)
+* [Licenses](#licenses)
+
+___
 
 ## Usage
 The examples below shows how to use this action in your GitHub Workflow. 
 
 ### Build Snap
 Create snap for amd64 architecture (for Virtual Control)
+
+#### Example - Build Snap
 ```yaml
 name: build ctrlX snap
 
@@ -59,8 +73,17 @@ jobs:
           files: '*.snap'
 ```
 
+#### Inputs - Build Snap
+| Name           | Required   | Type    | Description                                                                    |
+|----------------|------------|---------|--------------------------------------------------------------------------------|
+| `architecture` | `true`     | String  | Snap architecture (example: amd64/arm64)                                       |
+
+___
+
 ### Build App
 Create app file 
+
+#### Example - Build App
 ```yaml
 name: build ctrlX app
 
@@ -85,9 +108,17 @@ jobs:
           files: binaries.zip
 ```
 
-### Validate JSON schema
+#### Inputs - Build App
+| Name           | Required   | Type    | Description                                                                    |
+|----------------|------------|---------|--------------------------------------------------------------------------------|
+| `app-name`     | `false`    | String  | Name of the .app file (default: name of repository)                            |
 
+___
+
+### Validate JSON schema
 Validate JSON for ctrlX specific schemas
+
+#### Example - Validate JSON schema
 ```yaml
 name: validate JSON schema
 
@@ -105,9 +136,19 @@ jobs:
         name: Validate JSON
         uses: boschrexroth/ctrlx-action/validate-json-schema@v1
         with:
-          json-schema: test-schema.json
-          json-file: test.json
+          json-schema: test-schema.json #path to json schema
+          json-file: test-schema.json #path to json file
 ```
+
+#### Inputs - Validate JSON schema
+| Name           | Required   | Type    | Description                                                                    |
+|----------------|------------|---------|--------------------------------------------------------------------------------|
+| `json-schema`  | `true`     | String  | Directory to json schema                                                       |
+| `json-file`    | `true`     | String  | Directory to json file                                                         |
+| `ajv-options`  | `false`    | String  | ajv options to parse (default: --spec=draft2020 --strict=false --all-errors)   |
+
+___
+
 ## Important directions for use
 
 ### Areas of use and application
