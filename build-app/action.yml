@@ -22,7 +22,7 @@
 
 name: 'Ctrlx Build App'
 description: 'Building Ctrlx App'
-author: 'boschrexroth'
+author: 'Bosch Rexroth AG'
 
 inputs:
   app-name:

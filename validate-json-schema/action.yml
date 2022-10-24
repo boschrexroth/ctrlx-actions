@@ -22,7 +22,7 @@
 
 name: 'Ctrlx Validate JSON Schema'
 description: 'Validate JSON Schema'
-author: 'boschrexroth'
+author: 'Bosch Rexroth AG'
 
 inputs:
   json-schema:

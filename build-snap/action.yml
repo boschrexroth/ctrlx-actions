@@ -22,7 +22,7 @@
 
 name: 'Ctrlx Build Snap'
 description: 'Building Ctrlx snap'
-author: 'boschrexroth'
+author: 'Bosch Rexroth AG'
 
 inputs:
   architecture:

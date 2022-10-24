@@ -35,7 +35,7 @@ jobs:
         uses: actions/checkout@v3
       - 
         name: Build ctrlX snap
-        uses: boschrexroth/ctrlx-action/build-snap@v1
+        uses: boschrexroth/ctrlx-actions/build-snap@v1
         with: 
             architecture: amd64 #required (amd64/arm64)
       - 
@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v3
       - 
         name: Build ctrlX snap
-        uses: boschrexroth/ctrlx-action/build-snap@v1
+        uses: boschrexroth/ctrlx-actions/build-snap@v1
         with: 
             architecture: arm64 #required (amd64/arm64)
       - 
@@ -99,7 +99,7 @@ jobs:
         uses: actions/checkout@v3
       - 
         name: Build ctrlX snap
-        uses: boschrexroth/ctrlx-action/build-app@v1
+        uses: boschrexroth/ctrlx-actions/build-app@v1
       - 
         name: Release
         uses: softprops/action-gh-release@v1
@@ -134,7 +134,7 @@ jobs:
         uses: actions/checkout@v3
       - 
         name: Validate JSON
-        uses: boschrexroth/ctrlx-action/validate-json-schema@v1
+        uses: boschrexroth/ctrlx-actions/validate-json-schema@v1
         with:
           json-schema: test-schema.json #path to json schema
           json-file: test-schema.json #path to json file
