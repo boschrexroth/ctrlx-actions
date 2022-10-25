@@ -41,22 +41,6 @@ runs:
       shell: bash
 
     - run: |
-        sudo snap install snapcraft --classic
-        sudo dpkg --add-architecture arm64
-        echo "deb [arch=arm64] http://ports.ubuntu.com/ focal main restricted universe" | sudo tee -a /etc/apt/sources.list.d/multiarch-libs.list
-        echo "deb [arch=arm64] http://ports.ubuntu.com/ focal-updates main restricted universe" | sudo tee -a /etc/apt/sources.list.d/multiarch-libs.list
-        sudo sed -i 's/deb http/deb [arch=amd64] http/g' /etc/apt/sources.list 
-      shell: bash
-    
-    - run: |
-        snapcraft clean --destructive-mode
-        snapcraft --destructive-mode --target-arch=amd64 --enable-experimental-target-arch
-      shell: bash
-    - run: |
-        snapcraft clean --destructive-mode
-        snapcraft --destructive-mode --target-arch=arm64 --enable-experimental-target-arch
-      shell: bash
-    - run: |
         sudo mkdir -p public/snaps/amd64/release/
         sudo mkdir -p public/snaps/arm64/release/
         sudo cp *amd64.snap public/snaps/amd64/release/
