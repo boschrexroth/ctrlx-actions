@@ -97,9 +97,19 @@ jobs:
       - 
         name: Checkout
         uses: actions/checkout@v3
-      - 
-        name: Build ctrlX snap
-        uses: boschrexroth/ctrlx-actions/build-app@v1
+      -
+        name: Build ctrlX snap amd64
+        uses: boschrexroth/ctrlx-actions/build-snap@v1
+        with:
+            architecture: amd64 #required (amd64/arm64)
+      -
+        name: Build ctrlX snap arm64
+        uses: boschrexroth/ctrlx-actions/build-snap@v1
+        with:
+            architecture: arm64 #required (amd64/arm64)
+      -
+        name: Pack snaps into app file
+        uses: boschrexroth/ctrlx-actions/build-app2@v1
       - 
         name: Release
         uses: softprops/action-gh-release@v1
@@ -143,7 +153,7 @@ jobs:
 #### Inputs - Validate JSON schema
 | Name           | Required   | Type    | Description                                                                    |
 |----------------|------------|---------|--------------------------------------------------------------------------------|
-| `json-schema`  | `true`     | String  | Directory to json schema                                                       |
+| `json-schema`  | `false`    | String  | Directory to json schema (default: package-manifest.v1.1.schema.json)          |
 | `json-file`    | `true`     | String  | Directory to json file                                                         |
 | `ajv-options`  | `false`    | String  | ajv options to parse (default: --spec=draft2020 --strict=false --all-errors)   |
 
