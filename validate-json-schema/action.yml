@@ -20,14 +20,15 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-name: 'Ctrlx Validate JSON Schema'
+name: 'ctrlX Validate JSON Schema'
 description: 'Validate JSON Schema'
 author: 'Bosch Rexroth AG'
 
 inputs:
   json-schema:
     description: 'path to JSON schema'
-    required: true
+    required: false
+    default: package-manifest.v1.1.schema.json
   json-file:
     description: 'path to JSON file'
     required: true
@@ -41,6 +42,11 @@ runs:
   steps:
 
     - run: |
+        url=https://github.com/boschrexroth/json-schema/tree/master/ctrlx-automation/ctrlx-core/apps/package-manifest
+        link="$url"/"${{ inputs.json-schema }}"
+      
+        wget $link -O json-schema.json
+
         sudo npm install -g ajv-cli
-        ajv validate -s ${{ inputs.json-schema }} -d ${{ inputs.json-file }} ${{ inputs.ajv-options }}
+        ajv validate -s json-schema.json -d ${{ inputs.json-file }} ${{ inputs.ajv-options }}
       shell: bash

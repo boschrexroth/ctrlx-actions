@@ -20,8 +20,8 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE.
 
-name: 'Ctrlx Build App'
-description: 'Building Ctrlx App'
+name: 'ctrlX Build App'
+description: 'Building ctrlX App'
 author: 'Bosch Rexroth AG'
 
 inputs:
