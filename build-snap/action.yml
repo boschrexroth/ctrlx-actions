@@ -34,6 +34,12 @@ runs:
   steps:
 
     - run: |
+        if [ "$RUNNER_OS" != "Linux" ]; then
+          echo "::error::wrong OS, please select runs-on: ubuntu-latest" && exit 1
+        fi
+      shell: bash
+      
+    - run: |
         sudo snap install snapcraft --classic
         sudo dpkg --add-architecture arm64
         echo "deb [arch=arm64] http://ports.ubuntu.com/ focal main restricted universe" | sudo tee -a /etc/apt/sources.list.d/multiarch-libs.list

@@ -42,6 +42,12 @@ runs:
   steps:
 
     - run: |
+        if [ "$RUNNER_OS" != "Linux" ]; then
+          echo "::error::wrong OS, please select runs-on: ubuntu-latest" && exit 1
+        fi
+      shell: bash
+      
+    - run: |
         url=https://github.com/boschrexroth/json-schema/tree/master/ctrlx-automation/ctrlx-core/apps/package-manifest
         link="$url"/"${{ inputs.json-schema }}"
       
