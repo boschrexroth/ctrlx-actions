@@ -109,7 +109,7 @@ jobs:
             architecture: arm64 #required (amd64/arm64)
       -
         name: Pack snaps into app file
-        uses: boschrexroth/ctrlx-actions/build-app2@v1
+        uses: boschrexroth/ctrlx-actions/build-app@v1
       - 
         name: Release
         uses: softprops/action-gh-release@v1
