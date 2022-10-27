@@ -35,6 +35,7 @@ jobs:
         uses: actions/checkout@v3
       - 
         name: Build ctrlX snap
+        id: build-snap
         uses: boschrexroth/ctrlx-actions/build-snap@v1
         with: 
             architecture: amd64 #required (amd64/arm64)
@@ -43,7 +44,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v0.0.1
-          files: '*.snap'
+          files: ${{steps.build-snap.outputs.path-snap}}
 ```
 
 Create snap for arm64 architecture (for physical ctrlX)
@@ -62,6 +63,7 @@ jobs:
         uses: actions/checkout@v3
       - 
         name: Build ctrlX snap
+        id: build-snap
         uses: boschrexroth/ctrlx-actions/build-snap@v1
         with: 
             architecture: arm64 #required (amd64/arm64)
@@ -70,13 +72,18 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v0.0.1
-          files: '*.snap'
+          files: ${{steps.build-snap.outputs.path-snap}}
 ```
 
 #### Inputs - Build Snap
 | Name           | Required   | Type    | Description                                                                    |
 |----------------|------------|---------|--------------------------------------------------------------------------------|
 | `architecture` | `true`     | String  | Snap architecture (example: amd64/arm64)                                       |
+
+#### Outputs - Build Snap
+| Name           | Type    | Description                                                                                 |
+|----------------|---------|---------------------------------------------------------------------------------------------|
+| `path-snap`    | String  | Absolute path to the snap                                                                   |
 
 ___
 
@@ -90,26 +97,30 @@ name: build ctrlX app
 on: push
 
 jobs:
-  ctrlX:
+  main:
     runs-on: ubuntu-latest
 
     steps:
-      - 
-        name: Checkout
+      - name: Checkout
         uses: actions/checkout@v3
-      -
+      - 
         name: Build ctrlX snap amd64
+        id: amd64-build
         uses: boschrexroth/ctrlx-actions/build-snap@v1
-        with:
-            architecture: amd64 #required (amd64/arm64)
-      -
+        with: 
+            architecture: amd64
+      - 
         name: Build ctrlX snap arm64
+        id: arm64-build
         uses: boschrexroth/ctrlx-actions/build-snap@v1
-        with:
-            architecture: arm64 #required (amd64/arm64)
-      -
-        name: Pack snaps into app file
+        with: 
+            architecture: arm64
+      - 
+        name: Build app
         uses: boschrexroth/ctrlx-actions/build-app@v1
+        with: 
+            path-amd64-snap: ${{steps.amd64-build.outputs.path-snap}}
+            path-arm64-snap: ${{steps.arm64-build.outputs.path-snap}}
       - 
         name: Release
         uses: softprops/action-gh-release@v1
@@ -119,9 +130,11 @@ jobs:
 ```
 
 #### Inputs - Build App
-| Name           | Required   | Type    | Description                                                                    |
-|----------------|------------|---------|--------------------------------------------------------------------------------|
-| `app-name`     | `false`    | String  | Name of the .app file (default: name of repository)                            |
+| Name              | Required   | Type    | Description                                                                     |
+|-------------------|------------|---------|---------------------------------------------------------------------------------|
+| `app-name`        | `false`    | String  | Name of the .app file (default: name of repository)                             |
+| `path-amd64-snap` | `false`    | String  | Path to the amd64 snap file (default: '*amd64.snap')                            |
+| `path-arm64-snap` | `false`    | String  | Path to the arm64 snap file (default: '*arm64.snap')                            |
 
 ___
 
