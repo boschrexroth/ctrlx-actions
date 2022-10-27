@@ -41,10 +41,8 @@ runs:
   using: "composite"
   steps:
 
-    - run: |
-        if [ "$RUNNER_OS" != "Linux" ]; then
-          echo "::error::wrong OS, please select runs-on: ubuntu-latest" && exit 1
-        fi
+    - run: "echo ::error::wrong OS, please select runs-on: ubuntu-latest && exit 1"
+      if: runner.os != 'linux'
       shell: bash
       
     - run: |
