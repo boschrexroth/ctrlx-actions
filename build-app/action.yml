@@ -25,6 +25,14 @@ description: 'Building ctrlX App'
 author: 'Bosch Rexroth AG'
 
 inputs:
+  path-amd64-snap:
+    description: 'Absolute path to the amd64 snap'
+    required: false
+    default: '*amd64.snap'
+  path-arm64-snap:
+    description: 'Absolute path to the amd64 snap'
+    required: false
+    default: '*arm64.snap'
   app-name:
     description: 'Name of App'
     required: false
@@ -43,8 +51,8 @@ runs:
     - run: |
         sudo mkdir -p public/snaps/amd64/release/
         sudo mkdir -p public/snaps/arm64/release/
-        sudo cp *amd64.snap public/snaps/amd64/release/
-        sudo cp *arm64.snap public/snaps/arm64/release/
+        sudo cp ${{ inputs.path-arm64-snap }} public/snaps/arm64/release/
+        sudo cp ${{ inputs.path-amd64-snap }} public/snaps/amd64/release/
         tar -cf ${{ inputs.app-name }}.app public
         zip -r binaries.zip ${{ inputs.app-name }}.app *.snap
       shell: bash
