@@ -38,6 +38,11 @@ inputs:
     required: false
     default: ${{ github.event.repository.name }}
 
+outputs:
+  path-app:
+    description: 'Absolute path to the app'
+    value: ${{ steps.build-app.outputs.output-path }}
+
 runs:
   using: "composite"
   steps:
@@ -52,5 +57,7 @@ runs:
         sudo cp ${{ inputs.path-amd64-snap }} public/snaps/amd64/release/
         sudo cp ${{ inputs.path-arm64-snap }} public/snaps/arm64/release/
         tar -cf ${{ inputs.app-name }}.app public
+        #Output absolute path of the app file
+        echo "::set-output name=output-path::$(realpath $(find -name '${{ inputs.app-name }}.app'))"
         zip -r binaries.zip ${{ inputs.app-name }}.app *.snap
       shell: bash
