@@ -28,6 +28,10 @@ inputs:
   architecture:
     description: 'Architecture to build'
     required: true
+  path-app:
+    description: 'Relative path to app dir & snap/snapcraft.yaml'
+    required: false
+    default: ''
 
 outputs:
   path-snap:
@@ -52,6 +56,7 @@ runs:
     
     - id: build-snap
       run: |
+        cd ${{ inputs.path-app }}
         snapcraft clean --destructive-mode
         snapcraft --destructive-mode --target-arch=${{ inputs.architecture }} --enable-experimental-target-arch
         echo "::set-output name=output-path::$(realpath $(find -name '*${{ inputs.architecture }}.snap'))"
