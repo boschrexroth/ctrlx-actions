@@ -129,6 +129,7 @@ jobs:
             architecture: arm64
       - 
         name: Package App for ctrlX OS
+        id: app-build
         uses: boschrexroth/ctrlx-actions/build-app@v1
         with: 
             path-amd64-snap: ${{steps.amd64-build.outputs.path-snap}}
@@ -138,7 +139,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           tag_name: v0.0.1
-          files: binaries.zip
+          files: ${{steps.app-build.outputs.path-app}}
 ```
 
 #### Inputs - Build App
