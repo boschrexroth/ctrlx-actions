@@ -84,15 +84,16 @@ jobs:
 
 #### Inputs - Build Snap
 
-| Name           | Required   | Type    | Description                                                                    |
-|----------------|------------|---------|--------------------------------------------------------------------------------|
-| `architecture` | `true`     | String  | Snap architecture ('amd64' or 'arm64')                                         |
+| Name              | Required   | Type    | Description                                                                    |
+|-------------------|------------|---------|--------------------------------------------------------------------------------|
+| `architecture`    | `true`     | String  | Snap architecture ('amd64' or 'arm64')                                         |
+| `path-app-files`  | `false`    | String  | Path to the app files & snap/snapcraft.yaml (default: $GITHUB_WORKSPACE)       |
 
 #### Outputs - Build Snap
 
 | Name           | Type    | Description                                                                                 |
 |----------------|---------|---------------------------------------------------------------------------------------------|
-| `path-snap`    | String  | Absolute path to the snap                                                                   |
+| `path-snap`    | String  | Absolute path to the built snap                                                             |
 
 ___
 
@@ -144,9 +145,16 @@ jobs:
 
 | Name              | Required   | Type    | Description                                                                     |
 |-------------------|------------|---------|---------------------------------------------------------------------------------|
-| `app-name`        | `false`    | String  | Name of the .app file (default: name of repository)                             |
 | `path-amd64-snap` | `false`    | String  | Path to the amd64 snap file (default: '*amd64.snap')                            |
 | `path-arm64-snap` | `false`    | String  | Path to the arm64 snap file (default: '*arm64.snap')                            |
+| `path-app-files`  | `false`    | String  | Path to the app files & snap/snapcraft.yaml (default: $GITHUB_WORKSPACE)        |
+| `app-name`        | `false`    | String  | Name of the .app file (default: name of repository)                             |
+
+#### Outputs - Build Snap
+
+| Name           | Type    | Description                                                                                 |
+|----------------|---------|---------------------------------------------------------------------------------------------|
+| `path-app`     | String  | Absolute path to the built app                                                              |
 
 ___
 
