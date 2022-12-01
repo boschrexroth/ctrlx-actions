@@ -28,15 +28,15 @@ inputs:
   architecture:
     description: 'Architecture to build'
     required: true
-  path-app:
-    description: 'Relative path to app dir & snap/snapcraft.yaml'
+  path-app-files:
+    description: 'Path to the app files & snap/snapcraft.yaml'
     required: false
-    default: ''
+    default: $GITHUB_WORKSPACE
 
 outputs:
   path-snap:
-    description: 'Absolute path to the snap'
-    value: ${{ steps.build-snap.outputs.output-path }}
+    description: 'Absolute path to the built snap'
+    value: ${{ steps.build-snap.outputs.path-snap }}
 
 runs:
   using: "composite"
@@ -56,8 +56,8 @@ runs:
     
     - id: build-snap
       run: |
-        cd ${{ inputs.path-app }}
+        cd ${{ inputs.path-app-files }}
         snapcraft clean --destructive-mode
         snapcraft --destructive-mode --target-arch=${{ inputs.architecture }} --enable-experimental-target-arch
-        echo "::set-output name=output-path::$(realpath $(find -name '*${{ inputs.architecture }}.snap'))"
+        echo "path-snap=$(realpath $(find -name '*${{ inputs.architecture }}.snap'))" >> $GITHUB_OUTPUT
       shell: bash

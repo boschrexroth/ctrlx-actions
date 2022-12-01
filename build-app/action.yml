@@ -33,6 +33,10 @@ inputs:
     description: 'Absolute path to the amd64 snap'
     required: false
     default: '*arm64.snap'
+  path-app-files:
+    description: 'Path to the app files'
+    required: false
+    default: $GITHUB_WORKSPACE
   app-name:
     description: 'Name of App'
     required: false
@@ -40,8 +44,8 @@ inputs:
 
 outputs:
   path-app:
-    description: 'Absolute path to the app'
-    value: ${{ steps.build-app.outputs.output-path }}
+    description: 'Absolute path to the built app'
+    value: ${{ steps.build-app.outputs.path-app }}
 
 runs:
   using: "composite"
@@ -51,13 +55,14 @@ runs:
       if: runner.os != 'linux'
       shell: bash
 
-    - run: |
+    - id: build-app
+      run: |
+        cd ${{ inputs.path-app-files }}
         sudo mkdir -p public/snaps/amd64/release/
         sudo mkdir -p public/snaps/arm64/release/
         sudo cp ${{ inputs.path-amd64-snap }} public/snaps/amd64/release/
         sudo cp ${{ inputs.path-arm64-snap }} public/snaps/arm64/release/
         tar -cf ${{ inputs.app-name }}.app public
         #Output absolute path of the app file
-        echo "::set-output name=output-path::$(realpath $(find -name '${{ inputs.app-name }}.app'))"
-        zip -r binaries.zip ${{ inputs.app-name }}.app *.snap
+        echo "path-app=$(realpath $(find -name '${{ inputs.app-name }}.app'))" >> $GITHUB_OUTPUT
       shell: bash
