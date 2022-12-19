@@ -182,8 +182,7 @@ jobs:
         name: Validate JSON
         uses: boschrexroth/ctrlx-actions/validate-json-schema@v1
         with:
-          json-schema: test-schema.json # path to json schema
-          json-file: test-schema.json   # path to json file
+          json-file: file.json   # path to json file
 ```
 
 #### Inputs - Validate JSON schema
